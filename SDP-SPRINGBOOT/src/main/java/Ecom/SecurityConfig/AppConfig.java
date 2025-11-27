@@ -34,7 +34,7 @@ public class AppConfig {
 
                             cfg.setAllowedOriginPatterns(Collections.singletonList("*"));
 //                            cfg.setAllowedOriginPatterns(Collections.singletonList("https://eccomers96.netlify.app/"));
-                            cfg.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3001"));
+                            cfg.setAllowedOriginPatterns(Collections.singletonList("http://localhost:31098"));
                             cfg.setAllowedMethods(Collections.singletonList("*"));
         
                             cfg.setAllowCredentials(true);
@@ -48,6 +48,7 @@ public class AppConfig {
                 })
                 .authorizeHttpRequests(auth -> {
                     auth
+                            .requestMatchers("/", "/favicon.ico").permitAll() // Allow root path and favicon
                             .requestMatchers(HttpMethod.POST, "/ecom/admin").permitAll()
                             .requestMatchers(HttpMethod.POST, "/ecom/customers").permitAll()
                             .requestMatchers(HttpMethod.DELETE, "/ecom/orders/users/**").permitAll()
@@ -115,8 +116,7 @@ public class AppConfig {
                 })
                 .csrf(csrf -> csrf.disable())
                 .addFilterAfter(new JwtTokenGeneratorFilter(), BasicAuthenticationFilter.class)
-                .addFilterBefore(new JwtTokenValidatorFilter(), BasicAuthenticationFilter.class)
-                .httpBasic(Customizer.withDefaults());
+                .addFilterBefore(new JwtTokenValidatorFilter(), BasicAuthenticationFilter.class);
 
         return http.build();
 
@@ -130,4 +130,3 @@ public class AppConfig {
 
 
 }
-
